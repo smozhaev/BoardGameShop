@@ -34,3 +34,78 @@ yarn-error.*
 
 # typescript
 *.tsbuildinfo
+
+# Node.js зависимости
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Expo/React Native кеши
+.expo/
+.expo-shared/
+
+# Файлы логов и временные файлы
+*.log
+*.lock
+*.tmp
+*.swp
+
+# Файлы конфигурации IDE (VS Code, JetBrains и др.)
+.idea/
+.vscode/
+
+# Файлы сборки Android
+android/app/build/
+android/.gradle/
+android/.idea/
+android/local.properties
+android/app/debug.keystore
+android/app/proguard-rules.pro
+android/gradlew
+android/gradlew.bat
+android/gradle/
+android/gradle.properties
+android/settings.gradle
+android/app/src/debug/
+android/app/src/androidTest/
+android/app/src/test/
+
+# Сгенерированные ресурсы Android (иконки, сплэш-скрины и т. д.)
+android/app/src/main/res/mipmap-*
+android/app/src/main/res/drawable-*
+
+# Файлы iOS (если используется Expo Bare Workflow)
+ios/
+Pods/
+ios/Podfile.lock
+ios/build/
+
+# TypeScript кеши
+*.tsbuildinfo
+
+# Скрытые системные файлы macOS и Windows
+.DS_Store
+Thumbs.db
+
+.env
+.env.local
+.env.production
+.env.development
+
+# Android build files
+android/.gradle/
+android/gradle/
+android/app/build/
+android/local.properties
+android/gradlew
+android/gradlew.bat
+android/gradle.properties
+android/settings.gradle
+android/app/proguard-rules.pro
+
+# Generated resource files (если не редактировались вручную)
+android/app/src/main/res/mipmap-*
+android/app/src/main/res/drawable-*
+android/app/src/main/res/values/colors.xml
+android/app/src/main/res/values-night/colors.xml
