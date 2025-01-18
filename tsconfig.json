@@ -2,10 +2,20 @@
   "extends": "expo/tsconfig.base",
   "compilerOptions": {
     "strict": true,
+    "baseUrl": "./src",
+    "jsx": "react-native",
+    "allowJs": true,
     "paths": {
-      "@/*": [
-        "./*"
-      ]
+      "@app/*": ["app/*"],
+      "@entities/*": ["entities/*"],
+      "@features/*": ["features/*"],
+      "@pages/*": ["pages/*"],
+      "@shared/*": ["shared/*"],
+      "@shared/ui/*": ["shared/ui/*"],
+      "@shared/hooks/*": ["shared/hooks/*"],
+      "@shared/constants/*": ["shared/constants/*"],
+      "@shared/api/*": ["shared/api/*"],
+      "@widgets/*": ["widgets/*"]
     }
   },
   "include": [
@@ -13,5 +23,5 @@
     "**/*.tsx",
     ".expo/types/**/*.ts",
     "expo-env.d.ts"
-  ]
+  ],
 }
