@@ -104,7 +104,7 @@ export default function ShopPage() {
         onClose={() => setIsFilterVisible(false)}
       />
 
-      <CartButton onPress={() => dispatch(toggleCart())} />
+      {/* <CartButton /> */}
     </View>
   );
 }

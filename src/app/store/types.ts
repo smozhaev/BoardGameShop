@@ -1,3 +1,5 @@
+import { CartState } from '@entities/cart/model/types';
+
 export interface FilterState {
   searchQuery: string;
   categories: string[];
@@ -14,4 +16,5 @@ export interface FilterState {
 
 export interface RootState {
   filter: FilterState;
+  cart: CartState;
 }

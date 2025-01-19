@@ -5,17 +5,27 @@ import { Colors } from '@shared/constants';
 import { FontAwesome } from '@expo/vector-icons';
 import { useSelector } from 'react-redux';
 import { RootState } from '@app/store/types';
+import { useRouter } from 'expo-router';
 
 interface CartButtonProps {
-  onPress: () => void;
+  onPress?: () => void;
 }
 
 export const CartButton: React.FC<CartButtonProps> = ({ onPress }) => {
+  const router = useRouter();
   const items = useSelector((state: RootState) => state.cart.items);
   const totalItems = items.reduce((sum, item) => sum + item.quantity, 0);
 
+  const handlePress = () => {
+    if (onPress) {
+      onPress();
+    } else {
+      router.push('/cart');
+    }
+  };
+
   return (
-    <TouchableOpacity style={styles.button} onPress={onPress}>
+    <TouchableOpacity style={styles.button} onPress={handlePress}>
       <FontAwesome name="shopping-cart" size={24} color="#fff" />
       {totalItems > 0 && (
         <View style={styles.badge}>
@@ -32,7 +42,7 @@ const styles = StyleSheet.create({
     height: 48,
     borderRadius: 24,
     backgroundColor: Colors.light.tint,
-    justifyContent: 'center',
+    justifyContent: 'end',
     alignItems: 'center',
     position: 'absolute',
     bottom: 24,
