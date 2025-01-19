@@ -1,11 +1,11 @@
 import { StyleSheet } from 'react-native';
 import { Text, View } from '@shared/ui/Themed';
+import TournamentsPage from '@pages/tournaments';
 
 export default function TournamentScreen() {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Турниры</Text>
-      <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
+      <TournamentsPage/>
     </View>
   );
 }
