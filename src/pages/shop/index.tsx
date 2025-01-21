@@ -7,7 +7,7 @@ import { Product } from '@entities/product/model/types';
 import { products } from '@entities/product/model/constants';
 import { FilterPanel } from '@features/filter-panel/ui/FilterPanel';
 import { RootState } from '@app/store/types';
-import { setSearchQuery, toggleCart } from '@app/store/filterSlice';
+import { setSearchQuery } from '@app/store/filterSlice';
 import { SearchBar } from '@shared/ui/SearchBar';
 import { FontAwesome } from '@expo/vector-icons';
 import { Text } from '@shared/ui/Themed';

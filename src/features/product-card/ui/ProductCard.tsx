@@ -6,6 +6,7 @@ import { Product } from '@entities/product/model/types';
 import { FontAwesome } from '@expo/vector-icons';
 import { useDispatch } from 'react-redux';
 import { addToCart } from '@entities/cart/model/slice';
+import { Images } from '../../../../assets/images/games'
 
 interface ProductCardProps {
   product: Product;
@@ -26,7 +27,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onPress }) =>
       onPress={() => onPress(product)}
     >
       <Image
-        source={{ uri: product.imageUrl }}
+        source={Images[product.imageUrl]}
         style={styles.image}
         resizeMode="cover"
       />
@@ -62,7 +63,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onPress }) =>
             disabled={!product.inStock}
           >
             <FontAwesome 
-              name="shopping-cart" 
+              name="shopping-cart"
               size={20} 
               color={product.inStock ? '#fff' : '#999'} 
             />
