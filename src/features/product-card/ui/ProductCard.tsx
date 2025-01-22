@@ -1,73 +1,76 @@
-import React from 'react';
-import { View, Image, StyleSheet, TouchableOpacity } from 'react-native';
+import React, { useCallback } from 'react';
+import { View, StyleSheet, TouchableOpacity, Platform } from 'react-native';
 import { Text } from '@shared/ui/Themed';
-import { Colors } from '@shared/constants';
 import { Product } from '@entities/product/model/types';
+import { Image } from 'expo-image';
 import { FontAwesome } from '@expo/vector-icons';
-import { useDispatch } from 'react-redux';
-import { addToCart } from '@entities/cart/model/slice';
-import { Images } from '../../../../assets/images/games'
+import { hapticFeedback } from '@shared/lib/platform/haptics';
+import { shareProduct } from '@shared/lib/platform/share';
+import { Colors } from '@shared/constants';
 
 interface ProductCardProps {
   product: Product;
-  onPress: (product: Product) => void;
+  onPress: () => void;
 }
 
 export const ProductCard: React.FC<ProductCardProps> = ({ product, onPress }) => {
-  const dispatch = useDispatch();
+  const handlePress = useCallback(async () => {
+    await hapticFeedback.light();
+    onPress();
+  }, [onPress]);
 
-  const handleAddToCart = (e: any) => {
-    e.stopPropagation();
-    dispatch(addToCart({ product }));
-  };
+  const handleShare = useCallback(async () => {
+    try {
+      await hapticFeedback.medium();
+      await shareProduct(product.id, product.title);
+    } catch (error) {
+      console.error('Error sharing product:', error);
+    }
+  }, [product]);
 
   return (
-    <TouchableOpacity 
-      style={styles.container}
-      onPress={() => onPress(product)}
+    <TouchableOpacity
+      style={[styles.container, Platform.select({
+        ios: styles.containerIOS,
+        android: styles.containerAndroid,
+      })]}
+      onPress={handlePress}
+      activeOpacity={0.7}
     >
       <Image
-        source={Images[product.imageUrl]}
+        source={{ uri: product.imageUrl }}
         style={styles.image}
-        resizeMode="cover"
+        contentFit="cover"
+        transition={200}
       />
       <View style={styles.content}>
         <View style={styles.header}>
           <Text style={styles.title} numberOfLines={2}>
             {product.title}
           </Text>
-          <View style={styles.ratingContainer}>
-            <FontAwesome name="star" size={16} color="#FFD700" />
-            <Text style={styles.rating}>{product.rating}</Text>
-          </View>
-        </View>
-
-        <Text style={styles.description} numberOfLines={2}>
-          {product.description}
-        </Text>
-
-        <View style={styles.footer}>
-          <View>
-            <Text style={styles.price}>{product.price} ₽</Text>
-            {!product.inStock && (
-              <Text style={styles.outOfStock}>Нет в наличии</Text>
-            )}
-          </View>
-
           <TouchableOpacity
-            style={[
-              styles.addButton,
-              !product.inStock && styles.addButtonDisabled,
-            ]}
-            onPress={handleAddToCart}
-            disabled={!product.inStock}
+            style={styles.shareButton}
+            onPress={handleShare}
+            hitSlop={{ top: 10, right: 10, bottom: 10, left: 10 }}
           >
-            <FontAwesome 
-              name="shopping-cart"
-              size={20} 
-              color={product.inStock ? '#fff' : '#999'} 
+            <FontAwesome
+              name={Platform.OS === 'ios' ? 'share' : 'share-alt'}
+              size={20}
+              color={Colors.light.text}
             />
           </TouchableOpacity>
+        </View>
+        <Text style={styles.price}>{product.price} ₽</Text>
+        {!product.inStock && (
+          <Text style={styles.outOfStock}>Нет в наличии</Text>
+        )}
+        <View style={styles.footer}>
+          <Text style={styles.info}>{product.players}</Text>
+          <Text style={styles.info}>{product.playTime}</Text>
+          <View style={styles.rating}>
+            <FontAwesome name="star" size={16} color="#FFD700" />
+            <Text style={styles.ratingText}>{product.rating}</Text>
+          </View>
         </View>
       </View>
     </TouchableOpacity>
@@ -80,24 +83,28 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     overflow: 'hidden',
     marginBottom: 16,
-    elevation: 2,
+  },
+  containerIOS: {
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.2,
-    shadowRadius: 1.41,
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 8,
+  },
+  containerAndroid: {
+    elevation: 4,
   },
   image: {
     width: '100%',
     height: 200,
+    backgroundColor: '#f0f0f0',
   },
   content: {
-    padding: 16,
+    padding: 12,
   },
   header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'flex-start',
-    marginBottom: 8,
   },
   title: {
     fontSize: 18,
@@ -105,44 +112,36 @@ const styles = StyleSheet.create({
     flex: 1,
     marginRight: 8,
   },
-  ratingContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
+  shareButton: {
+    padding: 4,
   },
-  rating: {
-    marginLeft: 4,
-    fontSize: 16,
-    color: Colors.light.text,
+  price: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: Colors.light.tint,
+    marginTop: 8,
   },
-  description: {
-    fontSize: 14,
-    color: '#666',
-    marginBottom: 16,
+  outOfStock: {
+    color: '#ff6b6b',
+    marginTop: 4,
   },
   footer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+    marginTop: 12,
   },
-  price: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    color: Colors.light.text,
+  info: {
+    fontSize: 14,
+    color: '#666',
   },
-  outOfStock: {
-    fontSize: 12,
-    color: '#ff6b6b',
-    marginTop: 4,
-  },
-  addButton: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    backgroundColor: Colors.light.tint,
-    justifyContent: 'center',
+  rating: {
+    flexDirection: 'row',
     alignItems: 'center',
   },
-  addButtonDisabled: {
-    backgroundColor: '#f0f0f0',
+  ratingText: {
+    marginLeft: 4,
+    fontSize: 14,
+    fontWeight: 'bold',
   },
 });
