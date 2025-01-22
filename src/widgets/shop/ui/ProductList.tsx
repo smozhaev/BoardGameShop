@@ -1,5 +1,5 @@
-import React from 'react';
-import { ScrollView, StyleSheet, View, ActivityIndicator } from 'react-native';
+import React, { useCallback, memo } from 'react';
+import { FlatList, StyleSheet, View, ActivityIndicator } from 'react-native';
 import { Text } from '@shared/ui/Themed';
 import { Colors } from '@shared/constants';
 import { Product } from '@entities/product/model/types';
@@ -10,8 +10,26 @@ interface ProductListProps {
   onProductPress: (product: Product) => void;
 }
 
+const ProductItem = memo(({ item, onPress }: { 
+  item: Product; 
+  onPress: (product: Product) => void; 
+}) => (
+  <View style={styles.productContainer}>
+    <ProductCard
+      product={item}
+      onPress={() => onPress(item)}
+    />
+  </View>
+));
+
 export const ProductList: React.FC<ProductListProps> = ({ onProductPress }) => {
   const { products, loading, error } = useProductList();
+
+  const renderItem = useCallback(({ item }: { item: Product }) => (
+    <ProductItem item={item} onPress={onProductPress} />
+  ), [onProductPress]);
+
+  const keyExtractor = useCallback((item: Product) => item.id, []);
 
   if (loading) {
     return (
@@ -30,29 +48,33 @@ export const ProductList: React.FC<ProductListProps> = ({ onProductPress }) => {
   }
 
   return (
-    <ScrollView 
-      style={styles.scrollView}
-      contentContainerStyle={styles.productsContainer}
+    <FlatList
+      data={products}
+      renderItem={renderItem}
+      keyExtractor={keyExtractor}
+      contentContainerStyle={styles.listContainer}
       showsVerticalScrollIndicator={false}
-    >
-      {products.map(product => (
-        <ProductCard
-          key={product.id}
-          product={product}
-          onPress={() => onProductPress(product)}
-        />
-      ))}
-    </ScrollView>
+      removeClippedSubviews={true}
+      maxToRenderPerBatch={8}
+      updateCellsBatchingPeriod={50}
+      initialNumToRender={6}
+      windowSize={5}
+      getItemLayout={(data, index) => ({
+        length: 200, // Примерная высота элемента
+        offset: 200 * index,
+        index,
+      })}
+    />
   );
 };
 
 const styles = StyleSheet.create({
-  scrollView: {
-    flex: 1,
-  },
-  productsContainer: {
+  listContainer: {
     padding: 16,
     paddingBottom: 32,
+  },
+  productContainer: {
+    marginBottom: 16,
   },
   centerContainer: {
     flex: 1,
