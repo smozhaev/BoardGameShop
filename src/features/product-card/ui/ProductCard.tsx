@@ -50,7 +50,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onPress }) =>
       <View style={styles.content}>
         <View style={styles.header}>
           <Text style={styles.title} numberOfLines={2}>
-            ЩЦКЗЩЗЩЗ
+            {product.title}
           </Text>
           <TouchableOpacity
             style={styles.shareButton}
