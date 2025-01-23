@@ -33,7 +33,10 @@
     "react-native-screens": "~4.4.0",
     "react-native-snap-carousel": "^3.9.1",
     "react-native-web": "~0.19.13",
-    "react-redux": "^9.2.0"
+    "react-redux": "^9.2.0",
+    "expo-image": "~2.0.4",
+    "expo-haptics": "~14.0.1",
+    "expo-sharing": "~13.0.1"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",

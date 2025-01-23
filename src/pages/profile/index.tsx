@@ -36,6 +36,30 @@ const mockProfile: Profile = {
       place: 'Игровой клуб "Два кубика"',
       status: 'finished',
       result: 'Участник',
+    },{
+      id: '4',
+      title: 'Турнир по Колонизаторам',
+      date: '5 января 2025',
+      game: 'Колонизаторы',
+      place: 'Игровой клуб "Два кубика"',
+      status: 'finished',
+      result: 'Участник',
+    },{
+      id: '5',
+      title: 'Турнир по Колонизаторам',
+      date: '5 января 2025',
+      game: 'Колонизаторы',
+      place: 'Игровой клуб "Два кубика"',
+      status: 'finished',
+      result: 'Участник',
+    },{
+      id: '6',
+      title: 'Турнир по Колонизаторам',
+      date: '5 января 2025',
+      game: 'Колонизаторы',
+      place: 'Игровой клуб "Два кубика"',
+      status: 'finished',
+      result: 'Участник',
     },
   ],
 };
@@ -52,14 +76,8 @@ export default function ProfilePage() {
     <ScrollView style={styles.container}>
       <PointsCard points={mockProfile.points} />
       <TournamentsList
-        title="Предстоящие турниры"
+        title= {["Предстоящие турниры", "История"]}
         tournaments={upcomingTournaments}
-        type="upcoming"
-      />
-      <TournamentsList
-        title="История турниров"
-        tournaments={pastTournaments}
-        type="history"
       />
     </ScrollView>
   );

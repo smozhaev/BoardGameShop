@@ -42,11 +42,13 @@ export const WelcomeSection = () => {
         </LinearGradient>
         <View style={styles.scrollIndicator}>
           <Text style={styles.scrollText}>Листайте вниз</Text>
-          <Animated.View 
+          <Animated.View
             style={styles.arrow}
             entering={FadeIn.delay(500).duration(1000)}
           >
-            ↓
+            <Text>
+                ↓
+            </Text>
           </Animated.View>
         </View>
       </ImageBackground>
