@@ -115,6 +115,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     flex: 1,
     marginRight: 8,
+    color: 'black'
   },
   shareButton: {
     padding: 4,
