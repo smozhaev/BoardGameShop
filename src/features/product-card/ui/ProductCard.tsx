@@ -2,11 +2,13 @@ import React, { useCallback } from 'react';
 import { View, StyleSheet, TouchableOpacity, Platform } from 'react-native';
 import { Text } from '@shared/ui/Themed';
 import { Product } from '@entities/product/model/types';
+// npx expo install expo-image
 import { Image } from 'expo-image';
 import { FontAwesome } from '@expo/vector-icons';
 import { hapticFeedback } from '@shared/lib/platform/haptics';
 import { shareProduct } from '@shared/lib/platform/share';
 import { Colors } from '@shared/constants';
+import { Images } from "../../../../assets/images/games";
 
 interface ProductCardProps {
   product: Product;
@@ -28,6 +30,8 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onPress }) =>
     }
   }, [product]);
 
+  const productImage = Images[product.imageUrl];
+
   return (
     <TouchableOpacity
       style={[styles.container, Platform.select({
@@ -38,7 +42,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onPress }) =>
       activeOpacity={0.7}
     >
       <Image
-        source={{ uri: product.imageUrl }}
+        source={ productImage }
         style={styles.image}
         contentFit="cover"
         transition={200}
@@ -46,7 +50,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onPress }) =>
       <View style={styles.content}>
         <View style={styles.header}>
           <Text style={styles.title} numberOfLines={2}>
-            {product.title}
+            ЩЦКЗЩЗЩЗ
           </Text>
           <TouchableOpacity
             style={styles.shareButton}
